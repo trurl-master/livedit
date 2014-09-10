@@ -1,8 +1,6 @@
 /**
  * ver. 1.0
- * 09-07-2014
  * author: Ivan Galyatin
- * email: trurl-master@ya.ru
  */
 
 ;(function( $ ) {
