@@ -6,7 +6,8 @@
 ;(function( $ ) {
 
 	$.fn.livedit = function( selector, user_settings ) {
-		return $.livedit( selector, $.extend(true, {}, user_settings, { root: $(this) }))
+		$.livedit( selector, $.extend(true, {}, user_settings, { root: $(this) }))
+		return this;
 	}
 
 	$.livedit = function( selector, user_settings ) {
