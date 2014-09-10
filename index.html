@@ -65,19 +65,19 @@
 
           $(function() {
 
-            $('#editables').livedit('.text span', {
-                type: 'text', // same behaviour as input[type=text], enter triggers finish
-                on_change: function(html, text) {
-                  alert(html)
-                }
-            })
-             
-            $('#editables').livedit('.textarea', {
-                type: 'textarea', // same behaviour as textarea, by default shift-enter or blur triggers finish
-                on_change: function(html, text) {
-                  alert(html)
-                }
-            })
+            $('#editables')
+              .livedit('.text span', {
+                  type: 'text', // same behaviour as input[type=text], enter triggers finish
+                  on_change: function(html, text) {
+                    alert(html)
+                  }
+              })
+              .livedit('.textarea', {
+                  type: 'textarea', // same behaviour as textarea, by default shift-enter or blur triggers finish
+                  on_change: function(html, text) {
+                    alert(html)
+                  }
+              })
 
             $('.add-text').click(function(){
               $('#editables').append('<div class="text"><span>Some more text! Click me! I am editable too!</span></div>')

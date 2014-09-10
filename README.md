@@ -3,27 +3,29 @@ jquery.livedit
 
 Simple jquery wrapper around HTML contentEditable.
 
+[Demo](http://trurl-master.github.io/livedit/)
+
 #Usage:
 
 ##Example html
 ```
-<ul>
-  <li class="text">some text
-  <li class="text">some text2
-  <li class="textarea">some very long<br>multiline text
-</ul>
+<div id="wrap">
+  <div class="text">some text</div>
+  <div class="text">some text2</div>
+  <div class="textarea">some very long<br>multiline text</div>
+</div>
 ```
 
 ##js
 ```
-$('ul').livedit('.text', {
+$('#wrap').livedit('.text', {
 		type: 'text', // same behaviour as input[type=text], input triggers finish
 		on_change: function(html, text) {
 		  alert(html)
 		}
 })
  
-$('ul').livedit('.textarea', {
+$('#wrap').livedit('.textarea', {
 		type: 'textarea', // same behaviour as textarea, by default shift-enter or blur triggers finish
 		on_change: function(html, text) {
 		  alert(html)
