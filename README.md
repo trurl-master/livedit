@@ -23,7 +23,7 @@ In this case events are bound to .some-wrapper and is equivalent to:
     $.livedit(selector, {root: $('.some-wrapper')})
 
 #Options
-
+{
 	root:  $('body')        - default element to bind events to
 	type:  'text'           - mimic behaviour of input[type=text] or textarea
 	finish_on_enter: 'auto' - enter triggers finish: true/false; 'auto' - true for text, false for textarea, shift-enter always work
@@ -35,9 +35,9 @@ In this case events are bound to .some-wrapper and is equivalent to:
 	},
 
 ##Callbacks
-	on_finish: null,        - function(innerHTML, textContent){}, this - original element
-	on_change: null         - function(innerHTML, textContent){}, this - original element
-
+	on_finish: function(innerHTML, textContent){}, this - original element
+	on_change: function(innerHTML, textContent){}, this - original element
+}
 
 #Example usage:
 
