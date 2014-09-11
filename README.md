@@ -29,7 +29,7 @@ Finish event is triggered by:
 - blur
 - <kbd>shift-enter</kbd>
 - if options.finish_on_enter is true by <kbd>Enter</kbd>
-- if options.finish_on_enter is 'auto' and options.type is 'text' 
+- if options.finish_on_enter is 'auto' and options.type is 'text' by <kbd>Enter</kbd>
 
 
 #Options
