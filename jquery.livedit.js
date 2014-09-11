@@ -12,24 +12,26 @@
 
 	$.livedit = function( selector, user_settings ) {
 
-		var o = $.extend(true, {}, $.livedit.defaults, user_settings);
-
+		var o = $.extend(true, {}, $.livedit.defaults, user_settings)
 
 		if( o.finish_on_enter === 'auto' ) {
 			o.finish_on_enter = o.type === 'text';
 		}
+		
+		if( !o.lazy ) {
+			o.root.find(selector).addClass('livedit').each(function() {
 
-		// set empty className initially
-		o.root.find(selector).addClass('livedit').each(function() {
-			if( this.textContent.trim() === '' && o.empty && o.empty.className ) {
-				var $t = $(this)
-				$t.addClass(o.empty.className)
-				if( typeof o.empty.text !== 'undefined' )
-					$t.text(o.empty.text)
-			} else {
-				$(this).removeClass(o.empty.className)
-			}
-		})
+				// set empty className initially
+				if( this.textContent.trim() === '' && o.empty && o.empty.className ) {
+					var $t = $(this)
+					$t.addClass(o.empty.className)
+					if( typeof o.empty.text !== 'undefined' )
+						$t.text(o.empty.text)
+				} else {
+					$(this).removeClass(o.empty.className)
+				}
+			})
+		}
 
 
 		o.root.on('click', selector, function() {
@@ -100,6 +102,7 @@
 
 	$.livedit.defaults = {
 		root: $('body'),
+		lazy: false,
 		type: 'text',                // same behaviour as input[type=text] or as textarea
 		finish_on_enter: 'auto',     // enter triggers finish: true/false; 'auto' - true for text, false for textarea, shift-enter always work
 		start_return: true,          // what click returns

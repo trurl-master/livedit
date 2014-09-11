@@ -36,6 +36,7 @@ Finish event is triggered by:
 
 	root:  $('body')        - default element to bind events to
 	type:  'text'           - mimic behaviour of input[type=text] or textarea
+	lazy: false             - if true then plugin will not initialize element until user clicks on it
 	finish_on_enter: 'auto' - enter triggers finish: true/false; 'auto' - true for text, false for textarea, shift-enter always work
 	start_return: true      - what click on element returns
 	empty: {                - empty options
