@@ -3,33 +3,53 @@
  * author: Ivan Galyatin
  */
 
-;(function( $ ) {
+;(function($) {
 
-	$.fn.livedit = function( selector, user_settings ) {
-		$.livedit( selector, $.extend(true, {}, user_settings, { root: $(this) }))
+	$.fn.livedit = function(selector, user_settings) {
+
+		if (user_settings === 'destroy') {
+			$.livedit(selector, $.extend(true, {}, user_settings, { root: $(this) }), 'destroy')
+		} else {
+			$.livedit(selector, $.extend(true, {}, user_settings, { root: $(this) }))
+		}
+		
 		return this;
 	}
 
-	$.livedit = function( selector, user_settings ) {
+	$.livedit = function(selector, user_settings, action) {
 
 		var o = $.extend(true, {}, $.livedit.defaults, user_settings)
 
-		if( o.finish_on_enter === 'auto' ) {
+		if (action === 'destroy') {
+
+			o.root
+				.off('click', selector)
+				.off('keydown', selector)
+				.off('blur', selector)
+
+			o.root.find(selector).removeAttr('contenteditable')
+
+			return;
+		}
+
+		if (o.finish_on_enter === 'auto') {
 			o.finish_on_enter = o.type === 'text';
 		}
-		
-		if( !o.lazy ) {
+
+		if (!o.lazy) {
 			o.root.find(selector).addClass('livedit').each(function() {
 
+				var $t = $(this)
+
 				// set empty className initially
-				if( this.textContent.trim() === '' && o.empty && o.empty.className ) {
-					var $t = $(this)
+				if (this.textContent.trim() === '' && o.empty && o.empty.className) {
+					
 					$t.addClass(o.empty.className)
-					if( typeof o.empty.text !== 'undefined' )
+					if (typeof o.empty.text !== 'undefined')
 						$t.text(o.empty.text)
-				} else {
-					$(this).removeClass(o.empty.className)
-				}
+				} /*else {
+					$t.removeClass(o.empty.className)
+				}*/
 			})
 		}
 
@@ -38,24 +58,27 @@
 
 			var $el = $(this);
 
-			if( $el.hasClass('livedit-active') )
+			if ($el.hasClass('livedit-active')) {
 				return;
+			}
 
 			$el.addClass('livedit-active')
 
-			if( !$el.hasClass('livedit') ) {
+			if (!$el.hasClass('livedit')) {
 				$el.addClass('livedit')
 			}
 
-			if( !this.isContentEditable ) {
-				$el.attr('contenteditable', true).focus();
+			if (!this.isContentEditable) {
+				$el.attr('contenteditable', true);
 			}
 
-			if( $el.hasClass('empty') ) {
-				this.innerHTML = "<br>"; // we need something so element doesn't collapse
-				$el.data( 'original', '' )
+			$el.focus()
+
+			if ($el.hasClass('empty')) {
+				this.innerHTML = "&#x2007;"; // we need something so element doesn't collapse
+				$el.data('original', '')
 			} else {
-				$el.data( 'original', this.innerHTML );
+				$el.data('original', this.innerHTML);
 			}
 
 			return o.start_return;
@@ -63,17 +86,26 @@
 
 		o.root
 			.on('keydown', selector, function(e) {
-				if( e.keyCode === 13 && (o.finish_on_enter || e.shiftKey) ) {
+				if (e.keyCode === 13 && (o.finish_on_enter || e.shiftKey)) {
 					$(this).trigger('blur')
 				}
 			})
+			.on('paste', selector, function(e) {
+				if (!o.paste_as_text) {
+					return;
+				}
+
+				e.preventDefault();
+				var text = e.originalEvent.clipboardData.getData("text/plain");
+				document.execCommand("insertHTML", false, text);
+			})
 			.on('blur', selector, function() {
 				var $el = $(this)
-				   ,new_html = this.innerHTML.replace(/(<br>\s*)+$/, '')
+				   ,new_html = this.innerHTML.replace(/(<br>|\s)+$/, '').replace(/^(<br>|\s)+/, '') // trim whitespaces and html br's
 				   ,new_text = this.textContent.trim();
 
-				if( new_text === '' && typeof o.empty !== 'undefined' ) {
-					if( o.empty.restore ) {
+				if (new_text === '' && typeof o.empty !== 'undefined') {
+					if (o.empty.restore) {
 						this.innerHTML = $el.data('original')
 					} else {
 						this.textContent = o.empty.text
@@ -83,16 +115,15 @@
 					$el.removeClass(o.empty.className);
 				}
 
-				if( typeof o.on_change === 'function' && new_html !== $el.data('original') ) {
-					o.on_change.call( $el, new_html, new_text )
+				if (typeof o.on_change === 'function' && new_html !== $el.data('original')) {
+					o.on_change.call( $el, new_html, new_text)
 				}
 
-				if( typeof o.on_finish === 'function' ) {
-					o.on_finish.call( $el, new_html, new_text );
+				if (typeof o.on_finish === 'function') {
+					o.on_finish.call( $el, new_html, new_text);
 				}
 
 				$el.removeClass('livedit-active')
-
 			})
 
 
@@ -111,9 +142,10 @@
 			className: 'empty',      // class name to add to empty element
 			text: '_____'            // empty text
 		},
+		paste_as_text: true,
 		// events
 		on_finish: null,             // function(innerHTML, textContent){}, this - original element
 		on_change: null              // function(innerHTML, textContent){}, this - original element
 	}
 
-}( jQuery ));
+}(jQuery));
