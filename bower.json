@@ -1,0 +1,29 @@
+{
+  "name": "livedit",
+  "homepage": "https://github.com/trurl-master/livedit",
+  "authors": [
+    "Ivan Galyatin <trurl-master@ya.ru>"
+  ],
+  "description": "Simple jquery wrapper around HTML contentEditable that provides additional functionality",
+  "main": "jquery.livedit.js",
+  "keywords": [
+    "contenteditable",
+    "edit",
+    "text",
+    "textarea",
+    "in-place",
+    "editing",
+    "editor"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^3.1.1"
+  }
+}
