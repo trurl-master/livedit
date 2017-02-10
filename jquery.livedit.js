@@ -28,10 +28,20 @@
 				.off('blur', selector)
 
 			o.root.find(selector).removeAttr('contenteditable')
+			o.root.removeData('livedit')
 
 			return;
 		}
 
+		//
+		if (o.root.data('livedit')) {
+			return
+		} else {
+			o.root.data('livedit', true)
+		}
+
+
+		//
 		if (o.finish_on_enter === 'auto') {
 			o.finish_on_enter = o.type === 'text';
 		}
